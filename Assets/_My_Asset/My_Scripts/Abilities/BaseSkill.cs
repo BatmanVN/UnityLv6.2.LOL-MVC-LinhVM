@@ -1,0 +1,36 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public abstract class BaseSkill : MonoBehaviour
+{
+    [SerializeField] protected CoolDown coolDown;
+    [SerializeField] protected Image skillImage;
+    [SerializeField] protected Text skillText;
+    [SerializeField] private bool isSkillCD;
+    [SerializeField] protected Canvas skill;
+    [SerializeField] protected Image skillCone;
+    [SerializeField] protected float maxSkillDistance;
+    public bool IsSkillCD 
+    {
+        get => isSkillCD;
+        set
+        {
+            isSkillCD = value;
+            enabled = !isSkillCD;
+            coolDown.ResetCoolDown();
+        }
+    }
+
+    public Canvas Skill { get => skill;}
+
+    public abstract void CastSkill();
+    public abstract void SkillInput();
+    public abstract void RotateIndicator();
+    private void Start()
+    {
+
+    }
+}
