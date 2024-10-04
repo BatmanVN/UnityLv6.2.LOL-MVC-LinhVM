@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class PlayerController : BaseCharacter
 {
     [SerializeField] protected Istate<PlayerController> currentState;
-    public float distanceStop;
     public float CheckSpeedMovement() => CheckSpeed();
     private void Start()
     {
@@ -46,7 +45,10 @@ public class PlayerController : BaseCharacter
         if (currentState != null)
             currentState.OnEnter(this);
     }
-
+    public override void MoveToPoint(Vector3 point)
+    {
+        Agent.SetDestination(point);
+    }
     private void Update()
     {
         RunWithInput();

@@ -11,7 +11,8 @@ public class Skill3 : BaseSkill
     }
     public override void CastSkill()
     {
-        IsSkillCD = true;
+        if(!IsSkillCD)
+            IsSkillCD = true;
     }
 
     public override void RotateIndicator()

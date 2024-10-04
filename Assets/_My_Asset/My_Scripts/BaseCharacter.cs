@@ -13,6 +13,9 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] protected LayerMask layerMask;
     [SerializeField] private float smothTime;
     [SerializeField] private Transform target;
+    [SerializeField] private BaseEnemy focus;
+    [SerializeField] protected SetTarget setTarget;
+    [SerializeField] protected float distanceStop;
     public float SmothTime { get => smothTime; }
     private float rotateVelocity;
     protected bool isAttack;
@@ -39,6 +42,24 @@ public class BaseCharacter : MonoBehaviour
     {
         anim.SetFloat(nameAnim, speed, smoothTime, Time.deltaTime);
     }
+    protected virtual void SetFocus(BaseEnemy newFocus)
+    {
+        if (newFocus != focus)
+        {
+            if (focus != null)
+                focus.OnDeFocus();
+            focus = newFocus;
+            setTarget.FollowTarget(focus,distanceStop);
+        }
+        newFocus.Onfocus(transform);
+    }
+    protected virtual void RemoveFocus()
+    {
+        if (focus != null)
+            focus.OnDeFocus();
+        focus = null;
+        setTarget.StopFollowTarget();
+    }
     protected void RunWithInput()
     {
         if (Input.GetMouseButtonDown(1))
@@ -47,20 +68,24 @@ public class BaseCharacter : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
             {
                 MoveToPoint(hit.point);
-                if (Target != null)
+                RotatePlayer(hit.point, transform);
+                RemoveFocus();
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            {
+                BaseEnemy baseEnemy = hit.collider.GetComponent<BaseEnemy>();
+                if (baseEnemy != null)
                 {
-                    RotatePlayer(target.position, transform);
-                }
-                else
-                {
-                    RotatePlayer(hit.point, transform);
+                    MoveToPoint(baseEnemy.transform.position);
+                    SetFocus(baseEnemy);
+                    RotatePlayer(baseEnemy.transform.position, transform);
                 }
             }
         }
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    isAttack = true;
-        //}
     }
     protected virtual void RotatePlayer(Vector3 hit, Transform player)
     {
@@ -69,40 +94,40 @@ public class BaseCharacter : MonoBehaviour
             rotateLookAt.eulerAngles.y, ref rotateVelocity, rotateSpeed * (Time.deltaTime * 5));
         player.eulerAngles = new Vector3(0, yRotation, 0);
     }
-    protected virtual void MoveToPoint(Vector3 point)
+    public virtual void MoveToPoint(Vector3 point)
     {
         Agent.SetDestination(point);
     }
     protected virtual void SkillState()
     {
         var listSkill = SkillManager.Instance.Skills;
-        if (Input.GetKeyDown(KeyCode.Q))
+        var keyCodes = new[] { KeyCode.Q, KeyCode.W, KeyCode.E };
+        for (int i = 0; i < listSkill.Count; i++)
         {
-            listSkill[0].CastSkill();
-        }
-        if (Input.GetMouseButtonDown(0) && listSkill[0].Skill.enabled)
-        {
-            listSkill[0].SkillInput();
-            CurrentSkill = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            listSkill[1].CastSkill();
-        }
-        if (Input.GetMouseButtonDown(0) && listSkill[1].Skill.enabled)
-        {
-            listSkill[1].SkillInput();
-            CurrentSkill = 2;
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            CurrentSkill = 3;
-            listSkill[2].CastSkill();
+            if (Input.GetKeyDown(keyCodes[i]))
+            {
+                listSkill[i].CastSkill();
+                if (i == 2)
+                {
+                    CurrentSkill = 3;
+                }
+            }
+            if (Input.GetMouseButtonDown(0) && listSkill[i].Skill.enabled)
+            {
+                listSkill[i].SkillInput();
+                if (CurrentSkill > 1) return;
+                CurrentSkill = i + 1;
+            }
         }
     }
     protected virtual float CheckSpeed()
     {
         float speed = Agent.velocity.magnitude / Agent.speed;
         return speed;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, distanceStop);
     }
 }

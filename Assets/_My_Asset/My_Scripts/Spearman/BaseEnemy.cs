@@ -8,12 +8,13 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] protected NavMeshAgent enemy;
     [SerializeField] protected Animator anim;
     [SerializeField] protected float smoothTime;
-    [SerializeField] protected float radius;
+    [SerializeField] private float radius;
     [SerializeField] private Transform interactionPoint;
     [SerializeField] protected Transform player;
     protected bool isFocus;
 
     public Transform InteractionPoint { get => interactionPoint; set => interactionPoint = value; }
+    public float Radius { get => radius;}
 
     public void Onfocus(Transform playerTransform)
     {

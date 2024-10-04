@@ -17,9 +17,4 @@ public class SpearController : BaseEnemy
     {
         
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(InteractionPoint.position, Radius);
-    }
 }
