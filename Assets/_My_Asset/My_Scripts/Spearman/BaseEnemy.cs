@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BaseEnemy : MonoBehaviour
+public class BaseEnemy : MonoBehaviour/*,Interactable*/
 {
     [SerializeField] protected NavMeshAgent enemy;
     [SerializeField] protected Animator anim;
