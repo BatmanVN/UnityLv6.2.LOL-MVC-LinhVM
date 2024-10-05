@@ -15,4 +15,8 @@ public class ConstString : MonoBehaviour
     //Enemy add++
     public const string attackParaname = "Attack";
     public const string hitParaname = "Hit";
+
+    //Tag
+    public const string groundTag = "Ground";
+    public const string spearMan = "Spear";
 }

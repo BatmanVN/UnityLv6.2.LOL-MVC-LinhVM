@@ -20,17 +20,18 @@ public class PlayerController : BaseCharacter
             ChangeState(new IdleState());
             currentState.OnExercute(this);
         }
-        if (CheckSpeed() > 0)
+        if (CheckSpeed() > 0 && !isAttack)
         {
             ChangeState(new RunState());
             currentState.OnExercute(this);
         }
-        if (isAttack)
-        {
-            ChangeState(new DefaultAttackState());
-            currentState.OnExercute(this);
-            isAttack = false;
-        }
+        //if (Agent.remainingDistance <= Agent.stoppingDistance && Agent.remainingDistance != 0)
+        //{
+        //    //isAttack = true;
+        //    ChangeState(new DefaultAttackState());
+        //    currentState.OnExercute(this);
+        //    Debug.Log(Agent.remainingDistance);
+        //}
         if (CurrentSkill == 1 || CurrentSkill == 2 || CurrentSkill == 3)
         {
             ChangeState(new SkillState());

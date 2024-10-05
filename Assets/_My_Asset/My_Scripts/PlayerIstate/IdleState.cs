@@ -12,6 +12,11 @@ public class IdleState : Istate<PlayerController>
     public virtual void OnExercute(PlayerController player)
     {
         player.MoveAnim(ConstString.moveParaname, 0f, player.SmothTime);
+        if (player.Target != null)
+        {
+            player.ChangeState(new RunState());
+            player.MoveToPoint(player.Target.transform.position);
+        }
     }
 
     public void OnExit(PlayerController player)

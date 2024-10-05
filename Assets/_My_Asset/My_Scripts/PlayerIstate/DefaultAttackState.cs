@@ -11,11 +11,12 @@ public class DefaultAttackState : Istate<PlayerController>
 
     public void OnExercute(PlayerController player)
     {
-        player.ChangeAnim(ConstString.defaultAttack);
+
+            player.ChangeAnim(ConstString.defaultAttack);
     }
 
     public void OnExit(PlayerController player)
     {
-        
+
     }
 }

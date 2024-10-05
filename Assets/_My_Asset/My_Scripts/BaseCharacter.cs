@@ -18,7 +18,7 @@ public class BaseCharacter : MonoBehaviour
     [SerializeField] protected float distanceStop;
     public float SmothTime { get => smothTime; }
     private float rotateVelocity;
-    protected bool isAttack;
+    public bool isAttack;
     public int CurrentSkill { get => currentSkill; set => currentSkill = value; }
     public NavMeshAgent Agent { get => agent; set => agent = value; }
     public Transform Target { get => target; set => target = value; }
@@ -49,7 +49,7 @@ public class BaseCharacter : MonoBehaviour
             if (focus != null)
                 focus.OnDeFocus();
             focus = newFocus;
-            setTarget.FollowTarget(focus,distanceStop);
+            setTarget.FollowTarget(focus, distanceStop);
         }
         newFocus.Onfocus(transform);
     }
@@ -65,38 +65,40 @@ public class BaseCharacter : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
-            {
-                MoveToPoint(hit.point);
-                RotatePlayer(hit.point, transform);
-                RemoveFocus();
-            }
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
-                BaseEnemy baseEnemy = hit.collider.GetComponent<BaseEnemy>();
-                if (baseEnemy != null)
+                if (hit.collider.tag == ConstString.groundTag)
                 {
-                    MoveToPoint(baseEnemy.transform.position);
-                    SetFocus(baseEnemy);
-                    RotatePlayer(baseEnemy.transform.position, transform);
+                    MoveToPoint(hit.point);
+                    Agent.stoppingDistance = 0f;
+                    RemoveFocus();
+                }
+                BaseEnemy enemy = hit.collider.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    SetFocus(enemy);
+                    MoveToEnemy(enemy.transform.position);
                 }
             }
         }
     }
-    protected virtual void RotatePlayer(Vector3 hit, Transform player)
-    {
-        Quaternion rotateLookAt = Quaternion.LookRotation(hit - player.position);
-        float yRotation = Mathf.SmoothDampAngle(player.eulerAngles.y,
-            rotateLookAt.eulerAngles.y, ref rotateVelocity, rotateSpeed * (Time.deltaTime * 5));
-        player.eulerAngles = new Vector3(0, yRotation, 0);
-    }
     public virtual void MoveToPoint(Vector3 point)
     {
         Agent.SetDestination(point);
+        RotatePlayer(point);
+    }
+    public virtual void MoveToEnemy(Vector3 enemy)
+    {
+        Agent.SetDestination(target.position);
+        Agent.stoppingDistance = distanceStop;
+        RotatePlayer(enemy);
+    }
+    protected virtual void RotatePlayer(Vector3 hit)
+    {
+        Quaternion rotateLookAt = Quaternion.LookRotation(hit - transform.position);
+        float yRotation = Mathf.SmoothDampAngle(transform.eulerAngles.y,
+            rotateLookAt.eulerAngles.y, ref rotateVelocity, rotateSpeed * (Time.deltaTime * 5));
+        transform.eulerAngles = new Vector3(0, yRotation, 0);
     }
     protected virtual void SkillState()
     {
