@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Skill1 : BaseSkill
 {
-    [SerializeField] protected Vector3 position;
-    [SerializeField] protected RaycastHit hit;
-    [SerializeField] protected Ray ray;
-    [SerializeField] private Transform player;
+
     private void Start()
     {
         Skill.enabled = false;
@@ -23,7 +20,8 @@ public class Skill1 : BaseSkill
     {
         if (Skill.enabled)
         {
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
                 position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             }
@@ -45,7 +43,6 @@ public class Skill1 : BaseSkill
     }
     private void Update()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RotateIndicator();
     }
 }

@@ -11,8 +11,15 @@ public class DefaultAttackState : Istate<PlayerController>
 
     public void OnExercute(PlayerController player)
     {
-
-            player.ChangeAnim(ConstString.defaultAttack);
+        if (player.isAttack)
+        {
+            player.ChangeAnimBool(ConstString.attackParaname,true);
+        }
+        else if(player.isMoving)
+        {
+            player.ChangeAnimBool(ConstString.attackParaname, false);
+            player.ChangeState(new RunState());
+        }
     }
 
     public void OnExit(PlayerController player)

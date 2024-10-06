@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpearDieState : Istate<SpearController>
+public class SpearDeathState : Istate<SpearController>
 {
     public void OnEnter(SpearController spear)
     {

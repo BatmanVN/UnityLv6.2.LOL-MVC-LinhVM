@@ -13,6 +13,8 @@ public abstract class BaseSkill : MonoBehaviour
     [SerializeField] protected Canvas skill;
     [SerializeField] protected Image skillCone;
     [SerializeField] protected float maxSkillDistance;
+    protected Vector3 position;
+    [SerializeField] protected Transform player;
     public bool IsSkillCD 
     {
         get => isSkillCD;

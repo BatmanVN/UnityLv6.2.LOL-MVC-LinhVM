@@ -28,6 +28,10 @@ public class SkillState : MonoBehaviour, Istate<PlayerController>
             player.StartCoroutine(EnableVfx(0));
             player.StartCoroutine(DisableVfx(0,4f));
         }
+        if (player.isMoving)
+        {
+            player.ChangeState(new RunState());
+        }
     }
     public IEnumerator EnableVfx(int index)
     {

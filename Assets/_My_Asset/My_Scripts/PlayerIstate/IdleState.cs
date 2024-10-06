@@ -6,16 +6,31 @@ public class IdleState : Istate<PlayerController>
 {
     public void OnEnter(PlayerController player)
     {
-
+        player.MoveAnim(ConstString.moveParaname, 0f, player.SmothTime);
     }
 
     public virtual void OnExercute(PlayerController player)
     {
-        player.MoveAnim(ConstString.moveParaname, 0f, player.SmothTime);
         if (player.Target != null)
         {
             player.ChangeState(new RunState());
             player.MoveToPoint(player.Target.transform.position);
+        }
+        if (player.CheckSpeedMovement() <= 0)
+        {
+            player.MoveAnim(ConstString.moveParaname, 0f, player.SmothTime);
+            if (player.isAttack)
+            {
+                player.ChangeState(new DefaultAttackState());
+            }
+            if (player.CurrentSkill == 1 || player.CurrentSkill == 2 || player.CurrentSkill == 3)
+            {
+                player.ChangeState(new SkillState());
+            }
+        }
+        else if(player.CheckSpeedMovement() > 0)
+        {
+            player.ChangeState(new RunState());
         }
     }
 

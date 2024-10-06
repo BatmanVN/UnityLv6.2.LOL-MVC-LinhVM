@@ -7,7 +7,7 @@ public class ConstString : MonoBehaviour
     //Character
     public const string swordParaname = "Sword";
     public const string powerUpParaname = "Power";
-    public const string defaultAttack = "DFAttack";
+    public const string defaultAttack = "Attack";
     public const string moveParaname = "Move";
     public const string kickParaname = "Kick";
     public const string dieParaname = "Die";

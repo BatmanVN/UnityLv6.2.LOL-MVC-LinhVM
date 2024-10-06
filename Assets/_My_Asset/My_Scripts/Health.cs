@@ -9,29 +9,31 @@ public class Health : MonoBehaviour
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float healthPoint;
     [SerializeField] protected UnityEvent onDie;
-    [SerializeField] protected UnityEvent onTakeDame;
+    public bool beAttack;
+    //[SerializeField] protected UnityEvent onTakeDame;
     public UnityEvent<float, float> onHealthChanged;
     public bool dead => healthPoint <= 0;
-    public float HealthPoint
-    {
-        get => maxHealth;
-        set
-        {
-            healthPoint = value;
-            onHealthChanged?.Invoke(healthPoint,maxHealth);
-        }
-    }
+    //public float HealthPoint
+    //{
+    //    get => maxHealth;
+    //    set
+    //    {
+    //        healthPoint = value;
+    //        onHealthChanged?.Invoke(healthPoint,maxHealth);
+    //    }
+    //}
 
     private void Start()
     {
-        HealthPoint = maxHealth;
+        healthPoint = maxHealth;
     }
-    protected void TakeDame(float dame)
+    public void TakeDame(GameObject target ,float dame)
     {
         if (dead) return;
-        HealthPoint -= dame;
-        onTakeDame?.Invoke();
-        if (dead)
+        target.GetComponent<Health>().healthPoint -= dame;
+        onHealthChanged?.Invoke(target.GetComponent<Health>().healthPoint, target.GetComponent<Health>().maxHealth);
+        beAttack = true;
+        if (target.GetComponent<Health>().dead)
             Die();
     }
 

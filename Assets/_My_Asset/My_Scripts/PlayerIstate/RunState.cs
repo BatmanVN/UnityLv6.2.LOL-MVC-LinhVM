@@ -12,7 +12,14 @@ public class RunState : Istate<PlayerController>
 
     public void OnExercute(PlayerController player)
     {
-        player.MoveAnim(ConstString.moveParaname, player.CheckSpeedMovement(), player.SmothTime);
+        if (player.CheckSpeedMovement() > 0)
+        {
+            player.MoveAnim(ConstString.moveParaname, player.CheckSpeedMovement(), player.SmothTime);
+        }
+        else if(player.CheckSpeedMovement() <= 0)
+        {
+            player.ChangeState(new IdleState());
+        }
     }
     public void OnExit(PlayerController player)
     {
