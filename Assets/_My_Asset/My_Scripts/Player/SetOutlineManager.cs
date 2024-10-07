@@ -51,5 +51,4 @@ public class SetOutlineManager : MonoBehaviour
         player.Target.GetComponent<Outline>().enabled = false;
         player.Target = null;
     }
-
 }

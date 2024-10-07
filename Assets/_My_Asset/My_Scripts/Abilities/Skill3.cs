@@ -14,7 +14,11 @@ public class Skill3 : BaseSkill
         if(!IsSkillCD)
             IsSkillCD = true;
     }
-
+    public override void DeCastSkill()
+    {
+        Skill.enabled = false;
+        skillCone.enabled = false;
+    }
     public override void RotateIndicator()
     {
 

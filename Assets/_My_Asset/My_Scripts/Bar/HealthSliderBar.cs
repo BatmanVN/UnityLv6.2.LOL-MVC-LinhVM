@@ -13,7 +13,6 @@ public class HealthSliderBar : MonoBehaviour
     private void LateUpdate()
     {
         transform.LookAt(transform.position + cameraTransform.rotation * -Vector3.forward,cameraTransform.rotation * Vector3.up);
-        //transform.Rotate(direction);
     }
     private void Start()
     {

@@ -9,6 +9,11 @@ public class Skill2 : BaseSkill
         Skill.enabled = true;
         skillCone.enabled = true;
     }
+    public override void DeCastSkill()
+    {
+        Skill.enabled = false;
+        skillCone.enabled = false;
+    }
     public override void RotateIndicator()
     {
         if (Skill.enabled)

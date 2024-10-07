@@ -48,9 +48,9 @@ public class BaseCharacter : MonoBehaviour
     {
         anim.SetFloat(nameAnim, speed, smoothTime, Time.deltaTime);
     }
-    public void ChangeAnimBool(string name, bool isAttack)
+    public void ChangeAnimBool(string name, bool status)
     {
-        anim.SetBool(name, isAttack);
+        anim.SetBool(name, status);
     }
     public virtual void MoveToPoint(Vector3 point)
     {
@@ -83,9 +83,9 @@ public class BaseCharacter : MonoBehaviour
         float speed = Agent.velocity.magnitude / Agent.speed;
         return speed;
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, distanceStop);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(transform.position, distanceStop);
+    //}
 }

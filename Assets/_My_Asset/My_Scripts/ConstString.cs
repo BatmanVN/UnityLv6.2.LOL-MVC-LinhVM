@@ -19,4 +19,6 @@ public class ConstString : MonoBehaviour
     //Tag
     public const string groundTag = "Ground";
     public const string spearMan = "Spear";
+    public const string visionTag = "Vision";
+    public const string playerTag = "Player";
 }

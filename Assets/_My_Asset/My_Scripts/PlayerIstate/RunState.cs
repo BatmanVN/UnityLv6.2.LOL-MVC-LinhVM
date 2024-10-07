@@ -15,10 +15,15 @@ public class RunState : Istate<PlayerController>
         if (player.CheckSpeedMovement() > 0)
         {
             player.MoveAnim(ConstString.moveParaname, player.CheckSpeedMovement(), player.SmothTime);
+
         }
-        else if(player.CheckSpeedMovement() <= 0)
+        if (player.CheckSpeedMovement() <= 0)
         {
             player.ChangeState(new IdleState());
+        }
+        if (player.CharacterHealth.dead)
+        {
+            player.ChangeState(new DeathState());
         }
     }
     public void OnExit(PlayerController player)

@@ -31,6 +31,7 @@ public abstract class BaseSkill : MonoBehaviour
     public abstract void CastSkill();
     public abstract void SkillInput();
     public abstract void RotateIndicator();
+    public abstract void DeCastSkill();
     private void Start()
     {
 

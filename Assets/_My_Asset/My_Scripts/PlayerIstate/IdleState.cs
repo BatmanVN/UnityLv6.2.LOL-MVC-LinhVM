@@ -19,7 +19,7 @@ public class IdleState : Istate<PlayerController>
         if (player.CheckSpeedMovement() <= 0)
         {
             player.MoveAnim(ConstString.moveParaname, 0f, player.SmothTime);
-            if (player.isAttack)
+            if (player.isAttack && !player.isSkill)
             {
                 player.ChangeState(new DefaultAttackState());
             }
@@ -27,10 +27,18 @@ public class IdleState : Istate<PlayerController>
             {
                 player.ChangeState(new SkillState());
             }
+            if (player.CharacterHealth.beAttack)
+            {
+                player.ChangeState(new HitState());
+            }
         }
-        else if(player.CheckSpeedMovement() > 0)
+        if (player.CheckSpeedMovement() > 0)
         {
             player.ChangeState(new RunState());
+        }
+        if (player.CharacterHealth.dead)
+        {
+            player.ChangeState(new DeathState());
         }
     }
 

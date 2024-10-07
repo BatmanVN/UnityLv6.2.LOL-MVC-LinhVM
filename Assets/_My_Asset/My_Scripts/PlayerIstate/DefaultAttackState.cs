@@ -11,14 +11,29 @@ public class DefaultAttackState : Istate<PlayerController>
 
     public void OnExercute(PlayerController player)
     {
-        if (player.isAttack)
+        if (player.isAttack && !player.Target.GetComponent<Health>().dead && !player.isSkill)
         {
-            player.ChangeAnimBool(ConstString.attackParaname,true);
+            player.ChangeAnimBool(ConstString.attackParaname, true);
         }
-        else if(player.isMoving)
+        if (player.isSkill)
+        {
+            player.ChangeAnimBool(ConstString.attackParaname, false);
+            player.ChangeState(new IdleState());
+        }
+        if (player.isMoving && !player.isAttack)
         {
             player.ChangeAnimBool(ConstString.attackParaname, false);
             player.ChangeState(new RunState());
+        }
+        if (player.CharacterHealth.dead)
+        {
+            player.ChangeAnimBool(ConstString.attackParaname, false);
+            player.ChangeState(new DeathState());
+        }
+        if (player.Target != null && player.Target.GetComponent<Health>().dead)
+        {
+            player.ChangeAnimBool(ConstString.attackParaname, false);
+            player.ChangeState(new IdleState());
         }
     }
 

@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float healthPoint;
-    [SerializeField] protected UnityEvent onDie;
+    //[SerializeField] protected UnityEvent onDie;
     public bool beAttack;
     //[SerializeField] protected UnityEvent onTakeDame;
     public UnityEvent<float, float> onHealthChanged;
@@ -33,12 +33,12 @@ public class Health : MonoBehaviour
         target.GetComponent<Health>().healthPoint -= dame;
         onHealthChanged?.Invoke(target.GetComponent<Health>().healthPoint, target.GetComponent<Health>().maxHealth);
         beAttack = true;
-        if (target.GetComponent<Health>().dead)
-            Die();
+        //if (target.GetComponent<Health>().dead)
+        //    Die();
     }
 
-    protected void Die()
-    {
-        onDie?.Invoke();
-    }
+    //protected void Die()
+    //{
+    //    onDie?.Invoke();
+    //}
 }

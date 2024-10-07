@@ -18,6 +18,18 @@ public class SpearIdleState : Istate<SpearController>
             {
                 spear.ChangeState(new SpearHitState());
             }
+            if (spear.isAttack)
+            {
+                spear.ChangeState(new SpearAttackState());
+            }
+            if (spear.CharacterHealth.dead)
+            {
+                spear.ChangeState(new SpearDeathState());
+            }
+        }
+        if (spear.SpeedMove() > 0)
+        {
+            spear.ChangeState(new SpearRunIstate());
         }
     }
     public void OnExit(SpearController spear)

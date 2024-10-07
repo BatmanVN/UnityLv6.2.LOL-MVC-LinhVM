@@ -6,17 +6,20 @@ using UnityEngine.AI;
 public class PlayerController : BaseCharacter
 {
     [SerializeField] protected Istate<PlayerController> currentState;
-    [SerializeField] protected Health characterHealth;
+    [SerializeField] private Health characterHealth;
     [SerializeField] protected LayerMask layerMask;
     [SerializeField] private int currentSkill;
     [SerializeField] protected Camera cam;
     [SerializeField] private SetOutlineManager outlineManager;
+    public GameObject bonusDame;
+    public Coroutine stopCourotine;
     public bool isMoving;
-
+    public bool isSkill;
     [Header("Target")]
     [SerializeField] private Transform target;
     public int CurrentSkill { get => currentSkill; set => currentSkill = value; }
     public Transform Target { get => target; set => target = value; }
+    public Health CharacterHealth { get => characterHealth; }
 
     public float CheckSpeedMovement() => CheckSpeed();
     public float SpeedAttack() => attackSpeed;
@@ -34,18 +37,17 @@ public class PlayerController : BaseCharacter
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
                 SpearController spear = hit.collider.GetComponent<SpearController>();
-                if (hit.collider.CompareTag(ConstString.groundTag))
+                if (hit.collider.CompareTag(ConstString.groundTag) || hit.collider.CompareTag(ConstString.visionTag))
                 {
-                    isAttack = false;
                     MoveToPoint(hit.point);
                     Agent.stoppingDistance = 0f;
                     isMoving = true;
+                    isAttack = false;
                     if (target != null)
                     {
                         outlineManager.DeSelectTarget();
                         target = null;
                     }
-                    isAttack = false;
                 }
                 if (hit.collider.CompareTag(ConstString.spearMan))
                 {
@@ -61,34 +63,57 @@ public class PlayerController : BaseCharacter
     protected virtual void SkillState()
     {
         var listSkill = SkillManager.Instance.Skills;
-        var keyCodes = new[] { KeyCode.Q, KeyCode.W, KeyCode.E };
+        var keyCodes = new List<KeyCode> { KeyCode.Q, KeyCode.W, KeyCode.E };
         for (int i = 0; i < listSkill.Count; i++)
         {
-            if (Input.GetKeyDown(keyCodes[i]) && !listSkill[i].IsSkillCD)
+            if (!characterHealth.dead)
             {
-                listSkill[i].CastSkill();
-                if (i == 2)
+                if (Input.GetKeyDown(keyCodes[i]) && !listSkill[i].IsSkillCD)
                 {
-                    CurrentSkill = 3;
+                    isSkill = true;
+                    if (i == 2)
+                    {
+                        CurrentSkill = 3;
+                    }
+                    for (int j = 0; j < keyCodes.Count; j++)
+                    {
+                        if (i == j)
+                        {
+                            listSkill[i].CastSkill();
+                        }
+                        else
+                        {
+                            listSkill[j].DeCastSkill();
+                        }
+                    }
                 }
-            }
-            if (Input.GetMouseButtonDown(0) && listSkill[i].Skill.enabled)
-            {
-                listSkill[i].SkillInput();
-                if (CurrentSkill > 1) return;
-                CurrentSkill = i + 1;
+                if (Input.GetMouseButtonDown(0) && listSkill[i].Skill.enabled)
+                {
+                    listSkill[i].SkillInput();
+                    if (CurrentSkill > 1) return;
+                    CurrentSkill = i + 1;
+                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                    {
+                        RotatePlayer(hit.point);
+                    }
+                }
             }
         }
     }
     public void AttackCondition()
     {
-        if (UpdateSlash() && target != null && !isAttack)
+        if (UpdateSlash() && target != null && !isAttack && !characterHealth.dead)
         {
             float remainDistance = Vector3.Distance(transform.position, target.position);
             if (remainDistance <= Agent.stoppingDistance)
             {
                 isAttack = true;
                 isMoving = false;
+            }
+            if (target.GetComponent<Health>().dead || target == null)
+            {
+                isAttack = false;
             }
         }
     }
