@@ -19,7 +19,15 @@ public class CharacterManager : MonoBehaviour
         }
         if (listSpear == null)
         {
-            UiManager.Instance.UiGames[2].SetActive(true);
+            Invoke(nameof(EnableWinBar), 3f);
         }
+    }
+    public void EnableWinBar()
+    {
+        UiManager.Instance.UiGames[2].SetActive(true);
+    }
+    private void Update()
+    {
+        CheckWin();
     }
 }

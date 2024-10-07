@@ -7,12 +7,12 @@ public class PlayerController : BaseCharacter
 {
     [SerializeField] protected Istate<PlayerController> currentState;
     [SerializeField] private Health characterHealth;
+    [SerializeField] private float healAmount;
     [SerializeField] protected LayerMask layerMask;
     [SerializeField] private int currentSkill;
     [SerializeField] protected Camera cam;
     [SerializeField] private SetOutlineManager outlineManager;
     public GameObject bonusDame;
-    public Coroutine stopCourotine;
     public bool isMoving;
     public bool isSkill;
     [Header("Target")]
@@ -20,6 +20,7 @@ public class PlayerController : BaseCharacter
     public int CurrentSkill { get => currentSkill; set => currentSkill = value; }
     public Transform Target { get => target; set => target = value; }
     public Health CharacterHealth { get => characterHealth; }
+    public float HealAmount { get => healAmount;}
 
     public float CheckSpeedMovement() => CheckSpeed();
     public float SpeedAttack() => attackSpeed;
@@ -110,10 +111,6 @@ public class PlayerController : BaseCharacter
             {
                 isAttack = true;
                 isMoving = false;
-            }
-            if (target.GetComponent<Health>().dead || target == null)
-            {
-                isAttack = false;
             }
         }
     }

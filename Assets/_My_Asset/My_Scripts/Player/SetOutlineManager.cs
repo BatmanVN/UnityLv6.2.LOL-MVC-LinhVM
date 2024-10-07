@@ -35,12 +35,13 @@ public class SetOutlineManager : MonoBehaviour
     }
     public void SelectTarget()
     {
-        if (targetObj.CompareTag(ConstString.spearMan))
+        if (targetObj != null && targetObj.CompareTag(ConstString.spearMan))
         {
-            if (targetObj != null)
+            if (player.Target.GetComponent<Outline>() != null)
                 player.Target.GetComponent<Outline>().enabled = false;
             player.Target = hit.transform;
-            player.Target.GetComponent<Outline>().enabled = true;
+            if (player.Target.GetComponent<Outline>() != null)
+                player.Target.GetComponent<Outline>().enabled = true;
 
             targetOutLine.enabled = true;
             targetObj = null;

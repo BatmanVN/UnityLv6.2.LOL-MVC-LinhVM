@@ -33,12 +33,12 @@ public class Health : MonoBehaviour
         target.GetComponent<Health>().healthPoint -= dame;
         onHealthChanged?.Invoke(target.GetComponent<Health>().healthPoint, target.GetComponent<Health>().maxHealth);
         beAttack = true;
-        //if (target.GetComponent<Health>().dead)
-        //    Die();
     }
 
-    //protected void Die()
-    //{
-    //    onDie?.Invoke();
-    //}
+    public void Healing(GameObject target ,float healAmount)
+    {
+        if (healthPoint >= maxHealth) return;
+        healthPoint += healAmount;
+        onHealthChanged?.Invoke(target.GetComponent<Health>().healthPoint, target.GetComponent<Health>().maxHealth);
+    }
 }

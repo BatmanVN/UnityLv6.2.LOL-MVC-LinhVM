@@ -21,10 +21,10 @@ public class SkillState : MonoBehaviour, Istate<PlayerController>
         {
             player.CurrentSkill = 0;
             player.ChangeAnim(ConstString.swordParaname);
-            player.isSkill = false;
         }
         if (player.CurrentSkill == 3)
         {
+            player.CharacterHealth.Healing(player.gameObject,player.HealAmount);
             player.CurrentSkill = 0;
             player.ChangeAnim(ConstString.powerUpParaname);
             OnBonusDame(player, 10, 1);

@@ -45,6 +45,7 @@ public class SkillAttack : MonoBehaviour
     }
     public void DisableVfxSkill2()
     {
+        player.isSkill = false;
         player.bonusDame.SetActive(false);
     }
 }
