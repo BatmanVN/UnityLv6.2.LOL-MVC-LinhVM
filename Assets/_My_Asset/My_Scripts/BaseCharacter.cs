@@ -5,13 +5,14 @@ using UnityEngine.AI;
 
 public class BaseCharacter : MonoBehaviour
 {
+    [SerializeField] private List<MonoBehaviour> compenents;
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] protected Animator anim;
     [SerializeField] protected float rotateSpeed;
     [SerializeField] private float smothTime;
     [SerializeField] protected float distanceStop;
     public float SmothTime { get => smothTime; }
-    private float rotateVelocity;
+    public float rotateVelocity;
     public bool isAttack;
 
     [Header("Stats")]
@@ -21,6 +22,7 @@ public class BaseCharacter : MonoBehaviour
     protected float lastAttack;
     public NavMeshAgent Agent { get => agent; set => agent = value; }
     public float Dame { get => dame; set => dame = value; }
+    public List<MonoBehaviour> Compenents { get => compenents;}
 
     protected string animName = ConstString.defaultAttack;
     private void Start()
@@ -61,7 +63,7 @@ public class BaseCharacter : MonoBehaviour
     {
         
     }
-    protected virtual void RotatePlayer(Vector3 hit)
+    public virtual void RotatePlayer(Vector3 hit)
     {
         Quaternion rotateLookAt = Quaternion.LookRotation(hit - transform.position);
         float yRotation = Mathf.SmoothDampAngle(transform.eulerAngles.y,
@@ -83,9 +85,4 @@ public class BaseCharacter : MonoBehaviour
         float speed = Agent.velocity.magnitude / Agent.speed;
         return speed;
     }
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawWireSphere(transform.position, distanceStop);
-    //}
 }

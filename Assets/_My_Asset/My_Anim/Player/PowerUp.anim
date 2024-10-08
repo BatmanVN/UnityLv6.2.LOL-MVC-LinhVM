@@ -140260,7 +140260,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 3.8
+  - time: 3.7666667
     functionName: UnlockLockControl
     data: 
     objectReferenceParameter: {fileID: 0}

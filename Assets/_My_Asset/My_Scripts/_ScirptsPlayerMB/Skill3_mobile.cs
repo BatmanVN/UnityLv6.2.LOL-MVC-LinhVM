@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Skill3_mobile : BaseSkill
 {
+
+    public bool isSkill3;
     private void Start()
     {
         Skill.enabled = false;
@@ -11,18 +13,19 @@ public class Skill3_mobile : BaseSkill
     }
     private void Update()
     {
-        RotateIndicator();
+
     }
     public override void CastSkill()
     {
-        Skill.enabled = true;
-        skillCone.enabled = true;
+        if (!IsSkillCD)
+        {
+            isSkill3 = true;
+        }
     }
 
     public override void DeCastSkill()
     {
-        Skill.enabled = false;
-        skillCone.enabled = false;
+
     }
 
     public override void RotateIndicator()

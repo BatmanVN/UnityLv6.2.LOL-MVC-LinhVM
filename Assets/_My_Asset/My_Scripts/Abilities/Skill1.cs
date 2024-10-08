@@ -31,7 +31,7 @@ public class Skill1 : BaseSkill
             }
             Quaternion kickSkill = Quaternion.LookRotation(position - player.position);
             kickSkill.eulerAngles = new Vector3(0, kickSkill.eulerAngles.y, kickSkill.eulerAngles.z);
-            skill.transform.rotation = Quaternion.Slerp(kickSkill, skill.transform.rotation, 0);
+            Skill.transform.rotation = Quaternion.Slerp(kickSkill, Skill.transform.rotation, 0);
         }
     }
 
@@ -42,7 +42,7 @@ public class Skill1 : BaseSkill
             IsSkillCD = true;
         }
 
-        skill.enabled = false;
+        Skill.enabled = false;
         skillCone.enabled = false;
     }
     private void Update()

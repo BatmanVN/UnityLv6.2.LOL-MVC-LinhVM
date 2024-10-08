@@ -9,6 +9,10 @@ public class DeathState : MonoBehaviour, Istate<PlayerController>
         player.ChangeAnim(ConstString.dieParaname);
         player.enabled = false;
         player.Invoke(nameof(EnableUILoseTime), 3f);
+        foreach (var component in player.Compenents)
+        {
+            component.enabled = false;
+        }
     }
     public void EnableUILoseTime()
     {

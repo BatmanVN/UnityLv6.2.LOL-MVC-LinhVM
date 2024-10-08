@@ -11,7 +11,7 @@ public class SpearAttackState : Istate<SpearController>
 
     public void OnExercute(SpearController spear)
     {
-        if (spear.isAttack && !spear.Player.GetComponent<Health>().dead)
+        if (spear.isAttack && !spear.Player.GetComponent<Health>().dead && spear.Player != null)
         {
             spear.ChangeAnimBool(ConstString.attackParaname,true);
             spear.isAttack = false;

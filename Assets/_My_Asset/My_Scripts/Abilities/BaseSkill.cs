@@ -10,7 +10,7 @@ public abstract class BaseSkill : MonoBehaviour
     [SerializeField] protected Image skillImage;
     [SerializeField] protected Text skillText;
     [SerializeField] private bool isSkillCD;
-    [SerializeField] protected Canvas skill;
+    [SerializeField] private Canvas skill;
     [SerializeField] protected Image skillCone;
     [SerializeField] protected float maxSkillDistance;
     protected Vector3 position;
@@ -26,7 +26,7 @@ public abstract class BaseSkill : MonoBehaviour
         }
     }
 
-    public Canvas Skill { get => skill;}
+    public Canvas Skill { get => skill; set => skill = value; }
 
     public abstract void CastSkill();
     public abstract void SkillInput();

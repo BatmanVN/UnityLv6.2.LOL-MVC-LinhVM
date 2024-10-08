@@ -5,6 +5,9 @@ using UnityEngine;
 public class Skill2_mobile : BaseSkill
 {
     [SerializeField] private VariableJoystick skillJoy;
+    public bool isClick;
+    public bool castSkill;
+
     private void Start()
     {
         Skill.enabled = false;
@@ -12,7 +15,22 @@ public class Skill2_mobile : BaseSkill
     }
     private void Update()
     {
-        RotateIndicator();
+        if (isClick)
+            RotateIndicator();
+    }
+    public void ClickSkill()
+    {
+        if (!IsSkillCD)
+        {
+            isClick = true;
+            CastSkill();
+        }
+    }
+    public void DeClick()
+    {
+        isClick = false;
+        castSkill = true;
+        DeCastSkill();
     }
     public override void CastSkill()
     {
@@ -37,7 +55,7 @@ public class Skill2_mobile : BaseSkill
         {
             Quaternion targetRotate = Quaternion.LookRotation(direction);
             targetRotate.eulerAngles = new Vector3(0f, targetRotate.eulerAngles.y, 0f);
-            skill.transform.rotation = Quaternion.Slerp(skill.transform.rotation, targetRotate, 5 * Time.deltaTime);
+            Skill.transform.rotation = Quaternion.Slerp(Skill.transform.rotation, targetRotate, 5 * Time.deltaTime);
         }
     }
 

@@ -27,4 +27,8 @@ public class UiManager : Singleton<UiManager>
         Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(nameScene);
     }
+    public void EnableUI()
+    {
+
+    }
 }

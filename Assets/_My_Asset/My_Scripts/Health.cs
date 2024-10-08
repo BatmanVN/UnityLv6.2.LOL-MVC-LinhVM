@@ -8,9 +8,8 @@ public class Health : MonoBehaviour
 {
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float healthPoint;
-    //[SerializeField] protected UnityEvent onDie;
+    [SerializeField] protected UnityEvent onDie;
     public bool beAttack;
-    //[SerializeField] protected UnityEvent onTakeDame;
     public UnityEvent<float, float> onHealthChanged;
     public bool dead => healthPoint <= 0;
     //public float HealthPoint
@@ -40,5 +39,9 @@ public class Health : MonoBehaviour
         if (healthPoint >= maxHealth) return;
         healthPoint += healAmount;
         onHealthChanged?.Invoke(target.GetComponent<Health>().healthPoint, target.GetComponent<Health>().maxHealth);
+    }
+    public void Die()
+    {
+        onDie?.Invoke();
     }
 }
